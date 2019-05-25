@@ -20,10 +20,14 @@
             </b-nav-form>
 
             <b-nav-item-dropdown right v-if='loggedIn'>
-              <!-- Using 'button-content' slot -->
               <template slot="button-content"><font-awesome-icon icon="user" /></template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="#"  @click="logout">Sign Out</b-dropdown-item>
+            </b-nav-item-dropdown>
+            <b-nav-item-dropdown right v-else>
+              <template slot="button-content"><font-awesome-icon icon="user" /></template>
+              <b-dropdown-item href="/login">LogIn</b-dropdown-item>
+              <b-dropdown-item href="/sign-up">Sign Up</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -41,6 +45,11 @@ import { authComputed } from './vuex/helpers'
 export default {
   computed: {
     ...authComputed
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>

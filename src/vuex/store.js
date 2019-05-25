@@ -15,6 +15,10 @@ export default new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = `${
         userData.access_token
       }`
+    },
+    CLEAR_USER_DATA () {
+      localStorage.removeItem('user')
+      location.reload()
     }
   },
   actions: {
@@ -23,11 +27,19 @@ export default new Vuex.Store({
         .post('http://localhost:3000/api/v1/users.json',
         { user: credentials})
         .then(({ data }) => {
-          debugger
-          console.log(data);
           commit('SET_USER_DATA', data)
         })
     },
+    login ({ commit }, credentials) {
+      return axios
+        .post('http://localhost:3000/authenticate', credentials)
+        .then(({ data }) => {
+          commit('SET_USER_DATA', data)
+      })
+    },
+    logout ({ commit }) {
+      commit('CLEAR_USER_DATA')
+    }
   },
   getters: {
     loggedIn (state) {
